@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
+# assume have checked out into the repo
 set -ex
 
 if [ -z ${GITHUB_TOKEN+x} ]; then
   if [ -z ${1+x} ]; then
     echo "GITHUB_TOKEN not present, the first argument should be the token"
-    exit 1  
+    exit 1
   fi
   GITHUB_TOKEN=$1
 fi
 
-git config --global user.name "Brian Su (Built with Travis-CI)"
-git config --global user.email brianbb.su@gmail.com
+git config --global user.name "Brian Li [AUTO]"
+git config --global user.email brianlee0415@gmail.com
 
-git clone https://github.com/brianbbsu/BBQube.git --branch master --single-branch /master/
-cd /master/codebook
+cd codebook
 
 if [ -f codebook.pdf ]; then
     rm codebook.pdf
@@ -25,12 +25,12 @@ curtime=$(date +"%Y-%m-%d_%H:%M:%S")
 
 echo "Current time is: $curtime."
 
-git clone https://brianbbsu:$GITHUB_TOKEN@github.com/brianbbsu/BBQube.git --branch codebook --single-branch /codebook/
+git clone https://oauth2:$GITHUB_TOKEN@github.com/BrianLii/hj84.git \
+    --branch codebook --single-branch artifacts
+cp codebook.pdf artifacts/codebook.pdf
 
-cp codebook.pdf /codebook/codebook.pdf
-cd /codebook/
-
-git add .
+cd artifacts
+git add codebook.pdf
 git commit -m "Auto build, $curtime"
 git push origin codebook
 
