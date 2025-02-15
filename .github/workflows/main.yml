@@ -1,10 +1,9 @@
-name: Compile LaTeX
+name: Build Codebook
 
 on:
   push:
     branches:
       - master
-  pull_request:
 
 jobs:
   build:
@@ -16,15 +15,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Compile LaTeX document
+      - name: Compile with latexmk
         working-directory: codebook
         run: |
           mkdir -p .build
-          # albatross 这 
           latexmk -xelatex -interaction=nonstopmode -output-directory=.build codebook.tex
           
-      - name: Upload PDF artifact
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: compiled-pdf
+          name: codebook
           path: codebook/.build/codebook.pdf
